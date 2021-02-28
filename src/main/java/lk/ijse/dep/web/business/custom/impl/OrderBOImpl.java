@@ -10,6 +10,7 @@ import lk.ijse.dep.web.dto.OrderDTO;
 import lk.ijse.dep.web.entity.Item;
 import lk.ijse.dep.web.entity.Order;
 import lk.ijse.dep.web.entity.OrderDetail;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 
@@ -17,6 +18,8 @@ import javax.persistence.EntityManager;
  * @author : Lucky Prabath <lucky.prabath94@gmail.com>
  * @since : 2021-02-28
  **/
+
+@Component
 public class OrderBOImpl implements OrderBO {
 
     private OrderDAO orderDAO;

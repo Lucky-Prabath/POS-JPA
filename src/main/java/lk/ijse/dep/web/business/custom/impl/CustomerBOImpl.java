@@ -6,6 +6,7 @@ import lk.ijse.dep.web.dao.DAOFactory;
 import lk.ijse.dep.web.dao.DAOTypes;
 import lk.ijse.dep.web.dao.custom.CustomerDAO;
 import lk.ijse.dep.web.dto.CustomerDTO;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  * @author : Lucky Prabath <lucky.prabath94@gmail.com>
  * @since : 2021-02-28
  **/
+
+@Component
 public class CustomerBOImpl implements CustomerBO {
 
     private final CustomerDAO customerDAO;

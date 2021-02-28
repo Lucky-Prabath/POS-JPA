@@ -7,6 +7,7 @@ import lk.ijse.dep.web.dao.DAOTypes;
 import lk.ijse.dep.web.dao.custom.ItemDAO;
 import lk.ijse.dep.web.dto.ItemDTO;
 import lk.ijse.dep.web.entity.Item;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
  * @author : Lucky Prabath <lucky.prabath94@gmail.com>
  * @since : 2021-02-28
  **/
+
+@Component
 public class ItemBOImpl implements ItemBO {
 
     private ItemDAO itemDAO;
