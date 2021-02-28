@@ -2,12 +2,10 @@ package lk.ijse.dep.web.api;
 
 import lk.ijse.dep.web.business.BOFactory;
 import lk.ijse.dep.web.business.BOTypes;
-import lk.ijse.dep.web.business.custom.CustomerBO;
-import lk.ijse.dep.web.dto.CustomerDTO;
+import lk.ijse.dep.web.business.custom.ItemBO;
+import lk.ijse.dep.web.dto.ItemDTO;
 import lk.ijse.dep.web.exception.HttpResponseException;
 import lk.ijse.dep.web.exception.ResponseExceptionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -26,10 +24,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
  * @author : Lucky Prabath <lucky.prabath94@gmail.com>
  * @since : 2021-02-28
  **/
-@WebServlet(urlPatterns = "/api/v1/customers/*")
-public class CustomerServlet extends HttpServlet {
-
-    final Logger logger = LoggerFactory.getLogger(CustomerServlet.class);
+@WebServlet(urlPatterns = "/api/v1/items/*")
+public class ItemServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,18 +40,17 @@ public class CustomerServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
-
-        try{
+        try {
 
             if (req.getPathInfo() == null || req.getPathInfo().replace("/", "").trim().isEmpty()) {
-                throw new HttpResponseException(400, "Invalid customer id", null);
+                throw new HttpResponseException(400, "Invalid item code", null);
             }
 
-            String id = req.getPathInfo().replace("/", "");
+            String code = req.getPathInfo().replace("/", "");
 
-            CustomerBO customerBO = BOFactory.getInstance().getBO(BOTypes.CUSTOMER);
-            customerBO.setEntityManager(em);
-            customerBO.deleteCustomer(id);
+            ItemBO itemBO = BOFactory.getInstance().getBO(BOTypes.ITEM);
+            itemBO.setEntityManager(em);
+            itemBO.deleteItem(code);
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
         } catch (Exception e) {
@@ -70,25 +65,24 @@ public class CustomerServlet extends HttpServlet {
 
         final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
-
-        try{
+        try {
 
             if (req.getPathInfo() == null || req.getPathInfo().replace("/", "").trim().isEmpty()) {
-                throw new HttpResponseException(400, "Invalid customer id", null);
+                throw new HttpResponseException(400, "Invalid item code", null);
             }
 
-            String id = req.getPathInfo().replace("/", ""); //todo:- check this line
+            String code = req.getPathInfo().replace("/", "");
             Jsonb jsonb = JsonbBuilder.create();
-            CustomerDTO dto = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+            ItemDTO dto = jsonb.fromJson(req.getReader(), ItemDTO.class);
 
-            if (dto.getId() != null || dto.getName().trim().isEmpty() || dto.getAddress().trim().isEmpty()) {
+            if (dto.getCode() != null || dto.getDescription() == null || dto.getDescription().trim().isEmpty() || dto.getUnitPrice() == null || dto.getUnitPrice().doubleValue() == 0.0 || dto.getQtyOnHand() == null) {
                 throw new HttpResponseException(400, "Invalid details", null);
             }
 
-            CustomerBO customerBO = BOFactory.getInstance().getBO(BOTypes.CUSTOMER);
-            customerBO.setEntityManager(em);
-            dto.setId(id);
-            customerBO.updateCustomer(dto);
+            ItemBO itemBO = BOFactory.getInstance().getBO(BOTypes.ITEM);
+            itemBO.setEntityManager(em);
+            dto.setCode(code);
+            itemBO.updateItem(dto);
             resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
         } catch (JsonbException exp) {
@@ -103,15 +97,13 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Jsonb jsonb = JsonbBuilder.create();
-
         final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
-
-        try{
+        try {
             resp.setContentType("application/json");
-            CustomerBO customerBO = BOFactory.getInstance().getBO(BOTypes.CUSTOMER);
-            customerBO.setEntityManager(em);
-            resp.getWriter().println(jsonb.toJson(customerBO.findAllCustomers()));
+            ItemBO itemBO = BOFactory.getInstance().getBO(BOTypes.ITEM);
+            itemBO.setEntityManager(em);
+            resp.getWriter().println(jsonb.toJson(itemBO.findAllItems()));
 
         } catch (Throwable t) {
             ResponseExceptionUtil.handle(t, resp);
@@ -125,18 +117,16 @@ public class CustomerServlet extends HttpServlet {
         Jsonb jsonb = JsonbBuilder.create();
         final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
         EntityManager em = emf.createEntityManager();
+        try {
+            ItemDTO dto = jsonb.fromJson(req.getReader(), ItemDTO.class);
 
-        try{
-            CustomerDTO dto = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-
-            if (dto.getId() == null || dto.getId().trim().isEmpty() || dto.getName() == null || dto.getName().trim().isEmpty() ||
-                    dto.getAddress() == null || dto.getAddress().trim().isEmpty()) {
-                throw new HttpResponseException(400, "Invalid customer details", null);
+            if (dto.getCode() == null || dto.getCode().trim().isEmpty() || dto.getDescription() == null || dto.getDescription().trim().isEmpty() || dto.getUnitPrice() == null || dto.getUnitPrice().doubleValue() == 0.0 || dto.getQtyOnHand() == null) {
+                throw new HttpResponseException(400, "Invalid item details", null);
             }
 
-            CustomerBO customerBO = BOFactory.getInstance().getBO(BOTypes.CUSTOMER);
-            customerBO.setEntityManager(em);
-            customerBO.saveCustomer(dto);
+            ItemBO itemBO = BOFactory.getInstance().getBO(BOTypes.ITEM);
+            itemBO.setEntityManager(em);
+            itemBO.saveItem(dto);
             resp.setStatus(HttpServletResponse.SC_CREATED);
             resp.setContentType("application/json");
             resp.getWriter().println(jsonb.toJson(dto));

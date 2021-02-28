@@ -1,5 +1,6 @@
 package lk.ijse.dep.web.exception;
 
+import lk.ijse.dep.web.dto.ErrorDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +18,7 @@ public class ResponseExceptionUtil {
     static final Logger logger = LoggerFactory.getLogger(ResponseExceptionUtil.class);
 
     public static void handle(Throwable t, HttpServletResponse resp) throws IOException {
-        //todo: uncomment after creating entites
-        /*resp.setContentType("application/json");
+        resp.setContentType("application/json");
         Jsonb jsonb = JsonbBuilder.create();
         ErrorDTO dto = new ErrorDTO();
         dto.setError("Internal server error");
@@ -47,7 +47,7 @@ public class ResponseExceptionUtil {
             resp.setStatus(500);
             logger.error("Something went wrong", t);
         }
-        resp.getWriter().println(jsonb.toJson(dto));*/
+        resp.getWriter().println(jsonb.toJson(dto));
 
     }
 }
