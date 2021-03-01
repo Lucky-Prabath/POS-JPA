@@ -52,6 +52,7 @@ public class CustomerServlet extends HttpServlet {
 
             String id = req.getPathInfo().replace("/", "");
 
+            /*remove manually get dependencies from factory and get from spring container*/
             CustomerBO customerBO = AppInitializer.getContext().getBean(CustomerBO.class);
             customerBO.setEntityManager(em);
             customerBO.deleteCustomer(id);
