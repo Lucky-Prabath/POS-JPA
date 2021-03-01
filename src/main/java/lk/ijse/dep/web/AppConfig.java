@@ -2,6 +2,7 @@ package lk.ijse.dep.web;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * @author : Lucky Prabath <lucky.prabath94@gmail.com>
@@ -10,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan
-//todo: add aspectjautoproxy to hangle transactions in bo layer
+@EnableAspectJAutoProxy //to enable the transaction aspect in util package in bo layer
 public class AppConfig {
 }

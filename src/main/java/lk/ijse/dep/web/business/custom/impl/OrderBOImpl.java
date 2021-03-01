@@ -1,6 +1,7 @@
 package lk.ijse.dep.web.business.custom.impl;
 
 import lk.ijse.dep.web.business.custom.OrderBO;
+import lk.ijse.dep.web.business.util.DEPTransaction;
 import lk.ijse.dep.web.business.util.EntityDTOMapper;
 import lk.ijse.dep.web.dao.custom.ItemDAO;
 import lk.ijse.dep.web.dao.custom.OrderDAO;
@@ -39,10 +40,10 @@ public class OrderBOImpl implements OrderBO {
         itemDAO.setEntityManager(em);
     }
 
+    @DEPTransaction
     @Override
     public void placeOrder(OrderDTO orderDTO) throws Exception {
-        try {
-            em.getTransaction().begin();
+
             Order order = mapper.getOrder(orderDTO);
             orderDAO.save(order);
             for (OrderDetail orderDetail : order.getOrderDetails()) {
@@ -53,10 +54,6 @@ public class OrderBOImpl implements OrderBO {
                 }
                 itemDAO.update(item);
             }
-            em.getTransaction().commit();
-        }catch (Throwable t){
-            em.getTransaction().rollback();
-            throw t;
-        }
+
     }
 }
