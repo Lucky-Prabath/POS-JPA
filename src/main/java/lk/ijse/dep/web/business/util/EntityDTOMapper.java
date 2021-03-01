@@ -22,7 +22,7 @@ import java.util.List;
  * @since : 2021-02-28
  **/
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface EntityDTOMapper {
 
     EntityDTOMapper instance = Mappers.getMapper(EntityDTOMapper.class);

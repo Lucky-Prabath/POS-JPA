@@ -22,7 +22,8 @@ public class ItemBOImpl implements ItemBO {
     @Autowired
     private ItemDAO itemDAO;
     private EntityManager em;
-    private EntityDTOMapper mapper = EntityDTOMapper.instance;
+    @Autowired
+    private EntityDTOMapper mapper;
 
     public ItemBOImpl() {
     }
