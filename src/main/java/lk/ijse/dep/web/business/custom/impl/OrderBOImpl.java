@@ -40,6 +40,11 @@ public class OrderBOImpl implements OrderBO {
         itemDAO.setEntityManager(em);
     }
 
+    @Override
+    public EntityManager getEntityManager() {
+        return this.em;
+    }
+
     @DEPTransaction
     @Override
     public void placeOrder(OrderDTO orderDTO) throws Exception {

@@ -34,6 +34,11 @@ public class CustomerBOImpl implements CustomerBO {
         customerDAO.setEntityManager(em);
     }
 
+    @Override
+    public EntityManager getEntityManager() {
+        return this.em;
+    }
+
     @DEPTransaction
     @Override
     public void saveCustomer(CustomerDTO dto) throws Exception {

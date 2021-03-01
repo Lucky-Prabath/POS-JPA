@@ -35,6 +35,11 @@ public class ItemBOImpl implements ItemBO {
         itemDAO.setEntityManager(em);
     }
 
+    @Override
+    public EntityManager getEntityManager() {
+        return this.em;
+    }
+
     @DEPTransaction
     @Override
     public void saveItem(ItemDTO itemDTO) throws Exception {
