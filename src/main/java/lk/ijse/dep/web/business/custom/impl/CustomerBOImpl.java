@@ -2,10 +2,9 @@ package lk.ijse.dep.web.business.custom.impl;
 
 import lk.ijse.dep.web.business.custom.CustomerBO;
 import lk.ijse.dep.web.business.util.EntityDTOMapper;
-import lk.ijse.dep.web.dao.DAOFactory;
-import lk.ijse.dep.web.dao.DAOTypes;
 import lk.ijse.dep.web.dao.custom.CustomerDAO;
 import lk.ijse.dep.web.dto.CustomerDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -19,12 +18,12 @@ import java.util.List;
 @Component
 public class CustomerBOImpl implements CustomerBO {
 
-    private final CustomerDAO customerDAO;
+    @Autowired
+    private CustomerDAO customerDAO;
     private EntityManager em;
     private final EntityDTOMapper mapper = EntityDTOMapper.instance;
 
     public CustomerBOImpl() {
-        customerDAO = DAOFactory.getInstance().getDAO(DAOTypes.CUSTOMER);
     }
 
     @Override
