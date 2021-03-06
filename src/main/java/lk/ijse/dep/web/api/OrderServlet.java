@@ -38,8 +38,7 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Jsonb jsonb = JsonbBuilder.create();
-        final EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-        EntityManager em = emf.createEntityManager();
+
         try {
             OrderDTO dto = jsonb.fromJson(req.getReader(), OrderDTO.class);
 
@@ -48,7 +47,7 @@ public class OrderServlet extends HttpServlet {
             }
 
             OrderBO orderBO = AppInitializer.getContext().getBean(OrderBO.class);
-            orderBO.setEntityManager(em);
+
             orderBO.placeOrder(dto);
             resp.setStatus(HttpServletResponse.SC_CREATED);
         } catch (SQLIntegrityConstraintViolationException exp) {
@@ -58,8 +57,6 @@ public class OrderServlet extends HttpServlet {
             throw new HttpResponseException(400, "Failed to read the JSON", exp);
         } catch (Throwable e) {
             throw new RuntimeException(e);
-        } finally {
-            em.close();
         }
 
     }
