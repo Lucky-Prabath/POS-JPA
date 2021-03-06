@@ -1,15 +1,16 @@
 package lk.ijse.dep.web.business.custom.impl;
 
 import lk.ijse.dep.web.business.custom.OrderBO;
+import lk.ijse.dep.web.business.util.DEPTransaction;
 import lk.ijse.dep.web.business.util.EntityDTOMapper;
-import lk.ijse.dep.web.dao.DAOFactory;
-import lk.ijse.dep.web.dao.DAOTypes;
 import lk.ijse.dep.web.dao.custom.ItemDAO;
 import lk.ijse.dep.web.dao.custom.OrderDAO;
 import lk.ijse.dep.web.dto.OrderDTO;
 import lk.ijse.dep.web.entity.Item;
 import lk.ijse.dep.web.entity.Order;
 import lk.ijse.dep.web.entity.OrderDetail;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 
@@ -17,16 +18,19 @@ import javax.persistence.EntityManager;
  * @author : Lucky Prabath <lucky.prabath94@gmail.com>
  * @since : 2021-02-28
  **/
+
+@Component
 public class OrderBOImpl implements OrderBO {
 
+    @Autowired
     private OrderDAO orderDAO;
+    @Autowired
     private ItemDAO itemDAO;
     private EntityManager em;
-    private EntityDTOMapper mapper = EntityDTOMapper.instance;
+    @Autowired
+    private EntityDTOMapper mapper;
 
     public OrderBOImpl() {
-        orderDAO = DAOFactory.getInstance().getDAO(DAOTypes.ORDER);
-        itemDAO = DAOFactory.getInstance().getDAO(DAOTypes.ITEM);
     }
 
     @Override
@@ -37,9 +41,14 @@ public class OrderBOImpl implements OrderBO {
     }
 
     @Override
+    public EntityManager getEntityManager() {
+        return this.em;
+    }
+
+    @DEPTransaction
+    @Override
     public void placeOrder(OrderDTO orderDTO) throws Exception {
-        try {
-            em.getTransaction().begin();
+
             Order order = mapper.getOrder(orderDTO);
             orderDAO.save(order);
             for (OrderDetail orderDetail : order.getOrderDetails()) {
@@ -50,10 +59,6 @@ public class OrderBOImpl implements OrderBO {
                 }
                 itemDAO.update(item);
             }
-            em.getTransaction().commit();
-        }catch (Throwable t){
-            em.getTransaction().rollback();
-            throw t;
-        }
+
     }
 }

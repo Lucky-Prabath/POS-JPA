@@ -1,7 +1,6 @@
 package lk.ijse.dep.web.business.util;
 
-import lk.ijse.dep.web.dao.DAOFactory;
-import lk.ijse.dep.web.dao.DAOTypes;
+import lk.ijse.dep.web.AppInitializer;
 import lk.ijse.dep.web.dao.custom.CustomerDAO;
 import lk.ijse.dep.web.dto.CustomerDTO;
 import lk.ijse.dep.web.dto.ItemDTO;
@@ -23,7 +22,7 @@ import java.util.List;
  * @since : 2021-02-28
  **/
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface EntityDTOMapper {
 
     EntityDTOMapper instance = Mappers.getMapper(EntityDTOMapper.class);
@@ -53,7 +52,7 @@ public interface EntityDTOMapper {
     default Customer getCustomer(OrderDTO dto){
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
         try{
-            CustomerDAO dao = DAOFactory.getInstance().getDAO(DAOTypes.CUSTOMER);
+            CustomerDAO dao = AppInitializer.getContext().getBean(CustomerDAO.class);
             dao.setEntityManager(em);
             return dao.get(dto.getCustomerId());
         } catch (Exception e) {

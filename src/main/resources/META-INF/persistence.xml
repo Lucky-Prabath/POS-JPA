@@ -7,10 +7,10 @@
 
     <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
-<!--    <class>lk.ijse.dep.web.pos.entity.Customer</class>-->
-<!--    <class>lk.ijse.dep.web.pos.entity.Item</class>-->
-<!--    <class>lk.ijse.dep.web.pos.entity.Order</class>-->
-<!--    <class>lk.ijse.dep.web.pos.entity.OrderDetail</class>-->
+    <class>lk.ijse.dep.web.entity.Customer</class>
+    <class>lk.ijse.dep.web.entity.Item</class>
+    <class>lk.ijse.dep.web.entity.Order</class>
+    <class>lk.ijse.dep.web.entity.OrderDetail</class>
 
   </persistence-unit>
 </persistence>
