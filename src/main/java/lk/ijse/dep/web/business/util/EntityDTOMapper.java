@@ -7,7 +7,6 @@ import lk.ijse.dep.web.dto.ItemDTO;
 import lk.ijse.dep.web.dto.OrderDTO;
 import lk.ijse.dep.web.dto.OrderDetailDTO;
 import lk.ijse.dep.web.entity.*;
-import lk.ijse.dep.web.util.JPAUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -49,17 +48,9 @@ public interface EntityDTOMapper {
         return Date.valueOf(dto.getOrderDate());
     }
 
-    default Customer getCustomer(OrderDTO dto){
-        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
-        try{
+    default Customer getCustomer(OrderDTO dto) throws Exception {
             CustomerDAO dao = AppInitializer.getContext().getBean(CustomerDAO.class);
-            dao.setEntityManager(em);
             return dao.get(dto.getCustomerId());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            em.close();
-        }
     }
 
     @Mapping(source = ".", target = "orderDetailPK", qualifiedByName = "pk")

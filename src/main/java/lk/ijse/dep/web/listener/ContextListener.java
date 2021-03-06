@@ -4,7 +4,7 @@ package lk.ijse.dep.web.listener; /**
  **/
 
 
-import lk.ijse.dep.web.util.JPAUtil;
+import lk.ijse.dep.web.AppInitializer;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContextEvent;
@@ -37,8 +37,6 @@ public class ContextListener implements ServletContextListener{
 
         Properties prop = new Properties();
         try {
-            logger.info("Session factory is being initialized");
-            sce.getServletContext().setAttribute("emf", JPAUtil.getEntityManagerFactory());
 
             String logFilePath;
             if (prop.getProperty("app.log_dir") != null) {
@@ -57,7 +55,6 @@ public class ContextListener implements ServletContextListener{
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        JPAUtil.getEntityManagerFactory().close();
-        logger.info("Session factory is being shut down");
+        AppInitializer.getContext().close();
     }
 }

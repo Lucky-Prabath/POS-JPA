@@ -9,7 +9,4 @@ import javax.persistence.EntityManager;
 
 public interface SuperBO {
 
-    void setEntityManager(EntityManager em);
-
-    EntityManager getEntityManager(); //use for aspectj
 }

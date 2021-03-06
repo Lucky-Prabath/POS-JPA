@@ -3,6 +3,7 @@ package lk.ijse.dep.web.dao;
 import lk.ijse.dep.web.entity.SuperEntity;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  **/
 public abstract class CrudDAOImpl<T extends SuperEntity, PK extends Serializable> implements CrudDAO<T, PK> {
 
+    @PersistenceContext
     private EntityManager em;
     private Class<T> entityClassObj;
 
@@ -20,12 +22,9 @@ public abstract class CrudDAOImpl<T extends SuperEntity, PK extends Serializable
         entityClassObj =  (Class<T>)(((ParameterizedType)(this.getClass().getGenericSuperclass())).getActualTypeArguments()[0]);
     }
 
-    @Override
-    public void setEntityManager(EntityManager em) {
-        this.em = em;
-    }
 
-    protected EntityManager getEntityManager(){
+    @Override
+    public EntityManager getEntityManager(EntityManager em) {
         return em;
     }
 
