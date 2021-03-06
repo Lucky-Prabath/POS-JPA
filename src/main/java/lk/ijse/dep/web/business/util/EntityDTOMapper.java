@@ -49,17 +49,9 @@ public interface EntityDTOMapper {
         return Date.valueOf(dto.getOrderDate());
     }
 
-    default Customer getCustomer(OrderDTO dto){
-        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
-        try{
+    default Customer getCustomer(OrderDTO dto) throws Exception {
             CustomerDAO dao = AppInitializer.getContext().getBean(CustomerDAO.class);
-            dao.setEntityManager(em);
             return dao.get(dto.getCustomerId());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        } finally {
-            em.close();
-        }
     }
 
     @Mapping(source = ".", target = "orderDetailPK", qualifiedByName = "pk")
