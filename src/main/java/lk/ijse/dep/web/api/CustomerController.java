@@ -47,7 +47,9 @@ public class CustomerController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(value = "/{id:C\\d{3}}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateCustomer(@RequestBody CustomerDTO customerDTO) throws Exception {
+    public void updateCustomer(@PathVariable String id,
+                               @RequestBody CustomerDTO customerDTO) throws Exception {
+        customerDTO.setId(id);
         customerBO.updateCustomer(customerDTO);
     }
 }

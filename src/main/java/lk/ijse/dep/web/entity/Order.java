@@ -24,7 +24,7 @@ public class Order implements SuperEntity {
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
     @Setter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
     public Order(String id, Date date, Customer customer) {

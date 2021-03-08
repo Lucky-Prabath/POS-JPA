@@ -47,7 +47,8 @@ public class ItemController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(value = "/{code:I\\d{3}}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateItem(@RequestBody ItemDTO itemDTO) throws Exception {
+    public void updateItem(@PathVariable String code, @RequestBody ItemDTO itemDTO) throws Exception {
+        itemDTO.setCode(code);
         itemBO.updateItem(itemDTO);
     }
 }
