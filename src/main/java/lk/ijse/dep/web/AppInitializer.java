@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class AppInitializer {
 
     public static void main(String[] args) {
-        LogConfig.initLogging();
+        LogConfig.initLogging(); //error log
         SpringApplication.run(AppInitializer.class, args);
     }
 }
