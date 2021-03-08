@@ -1,6 +1,6 @@
 package lk.ijse.dep.web.business.util;
 
-import lk.ijse.dep.web.AppInitializer;
+import lk.ijse.dep.web.WebAppInitializer;
 import lk.ijse.dep.web.dao.custom.CustomerDAO;
 import lk.ijse.dep.web.dto.CustomerDTO;
 import lk.ijse.dep.web.dto.ItemDTO;
@@ -12,7 +12,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-import javax.persistence.EntityManager;
 import java.sql.Date;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public interface EntityDTOMapper {
     }
 
     default Customer getCustomer(OrderDTO dto) throws Exception {
-            CustomerDAO dao = AppInitializer.getContext().getBean(CustomerDAO.class);
+            CustomerDAO dao = WebAppInitializer.getContext().getBean(CustomerDAO.class);
             return dao.get(dto.getCustomerId());
     }
 

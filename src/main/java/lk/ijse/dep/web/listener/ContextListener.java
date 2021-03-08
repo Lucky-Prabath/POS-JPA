@@ -4,7 +4,7 @@ package lk.ijse.dep.web.listener; /**
  **/
 
 
-import lk.ijse.dep.web.AppInitializer;
+import lk.ijse.dep.web.WebAppInitializer;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContextEvent;
@@ -29,32 +29,7 @@ public class ContextListener implements ServletContextListener{
     @Override
     public void contextInitialized(ServletContextEvent sce) {
 
-        try {
-            Class.forName("lk.ijse.dep.web.AppInitializer");
-        } catch (ClassNotFoundException e) {
-            logger.error("Failed to load spring container", e);
-        }
 
-        Properties prop = new Properties();
-        try {
-
-            String logFilePath;
-            if (prop.getProperty("app.log_dir") != null) {
-                logFilePath = prop.getProperty("app.log_dir") + "/back-end.log";
-            } else {
-                logFilePath = System.getProperty("catalina.home") + "/logs/back-end.log";
-            }
-            FileHandler fileHandler = new FileHandler(logFilePath, true);
-            fileHandler.setFormatter(new SimpleFormatter());
-            fileHandler.setLevel(Level.INFO);
-            Logger.getLogger("").addHandler(fileHandler);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        AppInitializer.getContext().close();
-    }
 }
