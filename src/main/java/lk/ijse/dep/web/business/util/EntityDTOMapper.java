@@ -11,6 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 import java.util.List;
@@ -21,42 +22,42 @@ import java.util.List;
  **/
 
 @Mapper(componentModel = "spring")
-public interface EntityDTOMapper {
+public abstract class EntityDTOMapper {
 
-    EntityDTOMapper instance = Mappers.getMapper(EntityDTOMapper.class);
+    @Autowired
+    private CustomerDAO customerDAO;
 
-    Customer getCustomer(CustomerDTO dto);
+    public abstract Customer getCustomer(CustomerDTO dto);
 
-    CustomerDTO getCustomerDTO(Customer customer);
+    public abstract CustomerDTO getCustomerDTO(Customer customer);
 
-    List<CustomerDTO> getCustomerDTOs(List<Customer> customers);
+    public abstract List<CustomerDTO> getCustomerDTOs(List<Customer> customers);
 
-    Item getItem(ItemDTO dto);
+    public  abstract Item getItem(ItemDTO dto);
 
-    ItemDTO getItemDTO(Item item);
+    public abstract ItemDTO getItemDTO(Item item);
 
-    List<ItemDTO> getItemDTOs(List<Item> item);
+    public abstract List<ItemDTO> getItemDTOs(List<Item> item);
 
 
     @Mapping(source = "orderId", target = "id")
     @Mapping(source = ".", target = "date")
     @Mapping(source = ".", target = "customer")
-    Order getOrder(OrderDTO dto);
+    public abstract Order getOrder(OrderDTO dto);
 
-    default Date toDate(OrderDTO dto){
+    public Date toDate(OrderDTO dto){
         return Date.valueOf(dto.getOrderDate());
     }
 
-    default Customer getCustomer(OrderDTO dto) throws Exception {
-            CustomerDAO dao = WebAppInitializer.getContext().getBean(CustomerDAO.class);
-            return dao.get(dto.getCustomerId());
+    public Customer getCustomer(OrderDTO dto) throws Exception {
+            return customerDAO.get(dto.getCustomerId());
     }
 
     @Mapping(source = ".", target = "orderDetailPK", qualifiedByName = "pk")
-    OrderDetail getOrderDetail(OrderDetailDTO dto);
+    public abstract OrderDetail getOrderDetail(OrderDetailDTO dto);
 
     @Named("pk")
-    default OrderDetailPK toOrderDetailPK(OrderDetailDTO dto){
+    public OrderDetailPK toOrderDetailPK(OrderDetailDTO dto){
         return new OrderDetailPK(dto.getOrderId(), dto.getItemCode());
     }
 }
