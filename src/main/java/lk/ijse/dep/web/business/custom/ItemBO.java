@@ -19,4 +19,6 @@ public interface ItemBO extends SuperBO {
 
     public List<ItemDTO> findAllItems() throws Exception;
 
+    ItemDTO findItem(String itemCode) throws Exception;
+
 }

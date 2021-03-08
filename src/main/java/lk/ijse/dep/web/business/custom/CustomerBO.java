@@ -18,4 +18,6 @@ public interface CustomerBO extends SuperBO {
     public void deleteCustomer(String customerId) throws Exception;
 
     public List<CustomerDTO> findAllCustomers() throws Exception;
+
+    CustomerDTO findCustomer(String customerId) throws Exception;
 }

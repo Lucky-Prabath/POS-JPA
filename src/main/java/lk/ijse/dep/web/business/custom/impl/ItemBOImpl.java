@@ -52,4 +52,9 @@ public class ItemBOImpl implements ItemBO {
             List<Item> items = itemDAO.getAll();
             return mapper.getItemDTOs(items);
     }
+
+    @Override
+    public ItemDTO findItem(String itemCode) throws Exception {
+        return mapper.getItemDTO(itemDAO.get(itemCode));
+    }
 }
