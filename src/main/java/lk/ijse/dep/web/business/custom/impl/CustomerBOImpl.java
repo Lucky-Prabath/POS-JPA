@@ -2,14 +2,12 @@ package lk.ijse.dep.web.business.custom.impl;
 
 import lk.ijse.dep.web.business.custom.CustomerBO;
 import lk.ijse.dep.web.business.util.EntityDTOMapper;
-import lk.ijse.dep.web.dao.custom.CustomerDAO;
+import lk.ijse.dep.web.dao.CustomerDAO;
 import lk.ijse.dep.web.dto.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -37,24 +35,24 @@ public class CustomerBOImpl implements CustomerBO {
 
     @Override
     public void updateCustomer(CustomerDTO dto) throws Exception {
-        customerDAO.update(mapper.getCustomer(dto));
+        customerDAO.save(mapper.getCustomer(dto));
     }
 
     @Override
     public void deleteCustomer(String customerId) throws Exception {
-            customerDAO.delete(customerId);
+            customerDAO.deleteById(customerId);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<CustomerDTO> findAllCustomers() throws Exception {
-            List<CustomerDTO> customerDTOs = mapper.getCustomerDTOs(customerDAO.getAll());
+            List<CustomerDTO> customerDTOs = mapper.getCustomerDTOs(customerDAO.findAll());
             return customerDTOs;
     }
 
     @Override
     public CustomerDTO findCustomer(String customerId) throws Exception {
-        return mapper.getCustomerDTO(customerDAO.get(customerId));
+        return mapper.getCustomerDTO(customerDAO.findById(customerId).get());
     }
 }
 

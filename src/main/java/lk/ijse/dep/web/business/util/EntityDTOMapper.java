@@ -1,7 +1,6 @@
 package lk.ijse.dep.web.business.util;
 
-import lk.ijse.dep.web.WebAppInitializer;
-import lk.ijse.dep.web.dao.custom.CustomerDAO;
+import lk.ijse.dep.web.dao.CustomerDAO;
 import lk.ijse.dep.web.dto.CustomerDTO;
 import lk.ijse.dep.web.dto.ItemDTO;
 import lk.ijse.dep.web.dto.OrderDTO;
@@ -10,7 +9,6 @@ import lk.ijse.dep.web.entity.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
@@ -50,7 +48,7 @@ public abstract class EntityDTOMapper {
     }
 
     public Customer getCustomer(OrderDTO dto) throws Exception {
-            return customerDAO.get(dto.getCustomerId());
+            return customerDAO.findById(dto.getCustomerId()).get();
     }
 
     @Mapping(source = ".", target = "orderDetailPK", qualifiedByName = "pk")

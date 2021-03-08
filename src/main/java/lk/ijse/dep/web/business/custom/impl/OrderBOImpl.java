@@ -2,18 +2,15 @@ package lk.ijse.dep.web.business.custom.impl;
 
 import lk.ijse.dep.web.business.custom.OrderBO;
 import lk.ijse.dep.web.business.util.EntityDTOMapper;
-import lk.ijse.dep.web.dao.custom.ItemDAO;
-import lk.ijse.dep.web.dao.custom.OrderDAO;
+import lk.ijse.dep.web.dao.ItemDAO;
+import lk.ijse.dep.web.dao.OrderDAO;
 import lk.ijse.dep.web.dto.OrderDTO;
 import lk.ijse.dep.web.entity.Item;
 import lk.ijse.dep.web.entity.Order;
 import lk.ijse.dep.web.entity.OrderDetail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
 
 /**
  * @author : Lucky Prabath <lucky.prabath94@gmail.com>
@@ -42,12 +39,12 @@ public class OrderBOImpl implements OrderBO {
             Order order = mapper.getOrder(orderDTO);
             orderDAO.save(order);
             for (OrderDetail orderDetail : order.getOrderDetails()) {
-                Item item = itemDAO.get(orderDetail.getOrderDetailPK().getItemCode());
+                Item item = itemDAO.findById(orderDetail.getOrderDetailPK().getItemCode()).get();
                 item.setQtyOnHand(item.getQtyOnHand() - orderDetail.getQty());
                 if (item.getQtyOnHand() < 0){
                     throw new RuntimeException("Invalid Qty.");
                 }
-                itemDAO.update(item);
+                itemDAO.save(item);
             }
 
     }
